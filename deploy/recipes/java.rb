@@ -6,20 +6,6 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  case deploy[:database][:type]
-  when "mysql"
-    connector_jar = node['opsworks_java']['tomcat']['mysql_connector_jar']
-    connector_jar_path = ::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], connector_jar)
-    include_recipe "opsworks_java::mysql_connector"
-  when "postgresql"
-    connector_jar = node[:platform].eql?('ubuntu') ? 'postgresql-jdbc4.jar' : 'postgresql-jdbc.jar'
-    connector_jar_path = ::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], connector_jar)
-    include_recipe "opsworks_java::postgresql_connector"
-  else
-    connector_jar = ""
-    connector_jar_path = ""
-  end
-
   link ::File.join(node['opsworks_java']['tomcat']['lib_dir'], connector_jar) do
     to connector_jar_path
     action :create
@@ -44,8 +30,11 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
+
+  Chef::Log.debug("----------------- Custom Build -----------------")
+
   current_dir = ::File.join(deploy[:deploy_to], 'current')
-  webapp_dir = ::File.join(node['opsworks_java'][node['opsworks_java']['java_app_server']]['webapps_base_dir'], webapp_name)
+  webapp_dir = node['opsworks_java'][node['opsworks_java']['java_app_server']]['webapps_base_dir']
 
   # opsworks_deploy creates some stub dirs, which are not needed for typical webapps
   ruby_block "remove unnecessary directory entries in #{current_dir}" do
