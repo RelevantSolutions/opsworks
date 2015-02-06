@@ -22,7 +22,7 @@ default['authorization']['sudo']['users']             = []
 default['authorization']['sudo']['passwordless']      = false
 default['authorization']['sudo']['include_sudoers_d'] = false
 default['authorization']['sudo']['agent_forwarding']  = false
-default['authorization']['sudo']['sudoers_defaults']  = ['apache,deploy]
+default['authorization']['sudo']['sudoers_defaults']  = ['apache,deploy']
 
 case node['platform_family']
 when 'smartos'
