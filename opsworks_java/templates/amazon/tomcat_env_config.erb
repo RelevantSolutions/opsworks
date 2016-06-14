@@ -27,7 +27,7 @@ JAVA_HOME="<%= "#{::File.expand_path(::File.join(`readlink -f /usr/bin/java`, '.
 #JAVA_OPTS="-Xminf0.1 -Xmaxf0.3"
 
 # Use JAVA_OPTS to set java.library.path for libtcnative.so
-#JAVA_OPTS="-Djava.library.path=/usr/lib"
+#JAVA_OPTS="-Djava.library.path=/usr/lib -Dhttps.protocols=TLSv1.1,TLSv1.2"
 
 JAVA_OPTS="${JAVA_OPTS} -Djava.awt.headless=true"
 
